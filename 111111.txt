@@ -1,0 +1,22 @@
+CREATE TABLE customers (
+    id INT PRIMARY KEY,
+    email VARCHAR(100),
+    phone VARCHAR(20)
+);
+
+WITH RECURSIVE counter(i) AS (
+    SELECT 1
+    UNION ALL
+    SELECT i+1 FROM counter WHERE i < 120000
+)
+INSERT INTO customers (id, email, phone)
+SELECT 
+    i,
+    'user' || i || '@mail.com',
+    '+7' || substr('0000000000' || i, -10)
+FROM counter;
+
+CREATE UNIQUE INDEX idx_email_unique ON customers (email);
+
+INSERT INTO customers (id, email, phone) 
+VALUES (120001, 'user1@mail.com', '+79990000001');
